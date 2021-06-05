@@ -1,23 +1,7 @@
 const fs = require('fs/promises');
 const uniqid = require('uniqid');
 
-//middleware dealing with datebase
-//load and parse data file
-//-read all entries
-//-read single entry by ID
-//-add new entry
-//*get  matching entries by search criteria
-
 let data = {};
-/*Model structure
-    {
-        "name":"string",
-        "description":"string",
-        "image URL":"string",
-        "difficulty":"number"
-    }
-
-*/ 
 
 async function init(){
     try{
