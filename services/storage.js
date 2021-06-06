@@ -1,17 +1,7 @@
 const Cube = require('../models/Cube');
-const fs = require('fs/promises');
-const uniqid = require('uniqid');
 
-let data = {};
-
-async function init(){
-    try{
-        data = JSON.parse(await fs.readFile('./models/data.json'));
-    } catch (err){
-        console.error("Can not read database");
-    }
-
-    return (req, res, next)=>{
+async function init() {
+    return (req, res, next) => {
         req.storage = {
             getAll,
             getById,
@@ -21,29 +11,35 @@ async function init(){
     };
 }
 
-async function getAll(query){
-    let cubes = Object
-    .entries(data)
-    .map(([id,v])=> Object.assign({},{id}, v));
-   
-    //filter cubes by query params
-    if(query.search){
-        cubes = cubes.filter(c => c.name.toLowerCase().includes(query.search.toLowerCase()))
+async function getAll(query) {
+    const options = {};
+    
+    // //filter cubes by query params
+    if (query.search) {
+        options.name = { $regex: query.search, $options: 'i' };
     }
-    if(query.from){
-        cubes = cubes.filter(c => c.difficulty >= Number(query.from));
+    if (query.from) {
+        options.difficulty = {$gte: Number(query.from)}
     }
-    if(query.to){
-        cubes = cubes.filter(c => c.difficulty <= Number(query.to));
+    if (query.to) {
+        options.difficulty = options.difficulty || {};
+        options.difficulty.$gte = Number(query.to);
     }
+
+    const cubes = Cube.find(options).lean();
     return cubes;
 }
 
-async function getById(id){
-    return data[id];
+async function getById(id) {
+    const cube = await Cube.findById(id).lean();
+    if (cube) {
+        return cube;
+    } else {
+        return undefined;
+    }
 }
 
-async function create(cube){
+async function create(cube) {
     const record = new Cube(cube);
     return record.save();
     // try{
