@@ -1,5 +1,6 @@
 const Cube = require('../models/Cube');
 const Comment = require('../models/Comment');
+const Accessory = require('../models/Accessory');
 
 async function init() {
     return (req, res, next) => {
@@ -7,7 +8,9 @@ async function init() {
             getAll,
             getById,
             create,
-            createComment
+            createComment,
+            createAccessory,
+            getAllAccessories
         };
         next();
     };
@@ -64,10 +67,22 @@ async function createComment(cubeId, comment){
     cube.comments.push(newComment);
     await cube.save();
 }
+
+async function getAllAccessories(){
+    return Accessory.find({});
+}
+
+async function createAccessory(accessory){
+    const record = new Accessory(accessory);
+    return record.save();
+}
+
 module.exports = {
     init,
     getAll,
     getById,
     create,
-    createComment
+    createComment,
+    createAccessory,
+    getAllAccessories
 }
