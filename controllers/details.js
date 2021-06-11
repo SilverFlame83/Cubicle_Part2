@@ -23,11 +23,12 @@ module.exports = {
             accessories
         });
     },
-    async attachPost(req,res){
+    async attachPost(req, res) {
         const cubeId = req.params.cubeId;
-        const stickerId = req.body.accessories;
+        const stickerId = req.body.accessory;
 
-        await storage.attachSticker(cubeId, stickerId);
+        await req.storage.attachSticker(cubeId, stickerId);
+
         res.redirect(`/details/${cubeId}`);
     }
 };

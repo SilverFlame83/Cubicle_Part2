@@ -8,6 +8,7 @@ async function init() {
             getAll,
             getById,
             create,
+            edit,
             createComment,
             createAccessory,
             getAllAccessories,
@@ -50,6 +51,17 @@ async function getById(id) {
 async function create(cube) {
     const record = new Cube(cube);
     return record.save();
+}
+
+async function edit(id, cube) {
+    const existing = await Cube.findById(id);
+
+    if (!existing) {
+        throw new ReferenceError('No such ID in database');
+    }
+
+    Object.assign(existing, cube);
+    return existing.save();
 }
 
 async function createComment(cubeId, comment) {
