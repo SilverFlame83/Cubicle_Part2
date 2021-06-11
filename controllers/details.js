@@ -5,7 +5,7 @@ module.exports = {
         if (cube == undefined) {
             res.redirect('/404');
         } else {
-            console.log(cube);
+            
             const ctx = {
                 title: 'Cubicle',
                 cube
