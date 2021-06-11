@@ -15,7 +15,6 @@ module.exports = {
             if(err.name == 'ValidationError'){
                 return res.render('create', {title:'Create Cube', error:'All fields are required. Image Url must be a valid Url'});
             }
-            console.log(err.name);
         }
 
         res.redirect('/');

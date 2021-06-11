@@ -8,7 +8,7 @@ module.exports = {
             description: req.body.description,
             imageUrl: req.body.imageUrl,
         }
-        await req.storage.createAccessory(accessory)
+        await req.storage.createAccessory(accessory);
 
         res.redirect('/');
     }
